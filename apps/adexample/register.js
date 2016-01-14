@@ -1,7 +1,10 @@
 define('adexample/register', [
-], function () {
+    'settings!adexample'
+], function (settings) {
     'use strict';
 
-    return {};
+    return {
+        config: settings.get()
+    };
 });
 
