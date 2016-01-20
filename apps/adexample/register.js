@@ -1,13 +1,13 @@
 define('adexample/register', [
     'text!adexample/config.json',
-    'settings!adexample'
-], function (data, settings) {
+    'text!adexample/adcode.json'
+], function (data, code) {
     'use strict';
 
     var json = JSON.parse(data);
 
     return {
-        inject: settings.get('inject'),
+        inject: JSON.parse(code).inject,
         config: json
     };
 });
