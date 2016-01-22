@@ -1,6 +1,6 @@
-[{
+{"io.ox/ads/leaderboard": {
     "ad": "landscape",
-    "adtaghtml": "<div id='div-gpt-ad-1452692987643-0'><script type='text/javascript'>googletag.cmd.push(function() { googletag.display('div-gpt-ad-1452692987643-0'); });</script></div>",
+    "html": "<div id='div-gpt-ad-1452692987643-0'><script type='text/javascript'>googletag.cmd.push(function() { googletag.display('div-gpt-ad-1452692987643-0'); });</script></div>",
     "adinittrtigger": "if (window.googletag && googletag.pubadsReady) { googletag.pubads().refresh([slot_landscape]); } else { setTimeout(function(){ injectLandscape(true); }, 3000); } ",
     "css": "#io-ox-core { border-top: 1px solid #bbb; top: 90px; } .adv-landscape { height: 80px; border-bottom: 1px solid #bbb; background: #FFFFFF; } .landscape { background-repeat: no-repeat; position: absolute; left: 0; left: 50%; margin-left: -327px; height: 100%; width: 655px; }",
     "mobile_css": "@media(max-width: 480px) and (orientation: portrait), (max-height: 480px) and (orientation: landscape) { #io-ox-core { top: 50px; } #io-ox-windowmanager { right: 0; } .adv-landscape { height: 50px; } .landscape { height: 50px; width: 298px; margin-left: -149px; } }",
@@ -10,10 +10,10 @@
     "showadinmodules": [ "io.ox/portal", "io.ox/mail", "io.ox/contacts" ],
     "cooldown": 60000,
     "reloadtimer": 120000,
-    "capabilities": "webmail && contacts && calendar && !gibtsesnicht && !isnetda"
-}, {
+    "capabilities": "webmail && contacts && calendar && !gibtsesnicht && !disableLandscape"
+}, "io.ox/ads/skyscraper": {
     "ad": "skyscraper",
-    "adtaghtml": "<iv id='div-gpt-ad-1452692987643-0'><script type='text/javascript'>googletag.cmd.push(function() { googletag.display('div-gpt-ad-1452692987643-0'); });</script></div>",
+    "html": "<div id='div-gpt-ad-1452692987643-0'><script type='text/javascript'>googletag.cmd.push(function() { googletag.display('div-gpt-ad-1452692987643-0'); });</script></div>",
     "adinittrtigger": "if (window.googletag && googletag.pubadsReady) { googletag.pubads().refresh([slot_skyscraper]); } else { setTimeout(function(){ injectSkyscraper(true); }, 3000); } ",
     "css": "#io-ox-windowmanager { right: 300px; } .adv-skyscraper { width: 300px; border-left: 1px solid #bbb; background: #FFFFFF; position: absolute; right: 0; top: 0; bottom: 0; } .skyscraper { background-repeat: no-repeat; position: absolute; top: 0; left: 0; bottom: 0; width: 300px; }",
     "mobile_css": "@media (max-width: 1024px) { .adv-skyscraper { display: none; } #io-ox-windowmanager { right: 0; } }",
@@ -23,6 +23,8 @@
     "showadinmodules": "",
     "cooldown": 60000,
     "reloadtimer": 120000,
-    "capabilities": "!this_does_definitely_not_exists && webmail && calendar",
+    "capabilities": "!this_does_definitely_not_exists && webmail && calendar && !disableSkyscraper",
     "force": false
-}]
+}, "io.ox/ads/portalBillboard": {
+    "html": "<div>test</div>"
+}}
