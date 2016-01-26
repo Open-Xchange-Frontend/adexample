@@ -5,10 +5,9 @@
     "mobile_css": "@media(max-width: 480px) and (orientation: portrait), (max-height: 480px) and (orientation: landscape) { #io-ox-core { top: 50px; } #io-ox-windowmanager { right: 0; } .adv-landscape { height: 50px; } .landscape { height: 50px; width: 298px; margin-left: -149px; } }",
     "handleModuleViews_show": "if (!_.device('smartphone')) { slot_landscape.setTargeting('mobile', 'false'); $('.adv-landscape').css('height', '80px'); $('.landscape').css('height', '80px'); $('#io-ox-core').css('top', '80px'); } else { slot_landscape.setTargeting('mobile', 'true'); $('.adv-landscape').css('height', '50px'); $('.landscape').css('height', '50px'); $('#io-ox-core').css('top', '50px'); } googletag.pubads().refresh([slot_landscape]);",
     "handleModuleViews_hide": "$('.adv-landscape').css('height', '5px'); $('.landscape').css('height', '5px'); $('#io-ox-core').css('top', '5px'); googletag.pubads().clear([slot_landscape]);",
-    "adreloadtrigger": "googletag.pubads().refresh([slot_landscape]);",
     "showadinmodules": [ "io.ox/portal", "io.ox/mail", "io.ox/contacts" ],
     "cooldown": 60000,
-    "reloadtimer": 120000,
+    "reloadAfter": 120000,
     "capabilities": "webmail && contacts && calendar && !gibtsesnicht && !disableLandscape"
 }, "io.ox/ads/skyscraper": {
     "ad": "skyscraper",
@@ -17,10 +16,9 @@
     "mobile_css": "@media (max-width: 1024px) { .adv-skyscraper { display: none; } #io-ox-windowmanager { right: 0; } }",
     "handleModuleViews_show": "if (!_.device('smartphone')) { slot_skyscraper.setTargeting('mobile', 'false'); } else { slot_skyscraper.setTargeting('mobile', 'false'); } ",
     "handleModuleViews_hide": "",
-    "adreloadtrigger": "googletag.pubads().refresh([slot_skyscraper]);",
     "showadinmodules": "",
     "cooldown": 60000,
-    "reloadtimer": 120000,
+    "reloadAfter": 120000,
     "capabilities": "!this_does_definitely_not_exists && webmail && calendar && !disableSkyscraper",
     "force": false
 }, "io.ox/ads/portalBillboard": {

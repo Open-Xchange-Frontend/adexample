@@ -15,6 +15,9 @@ define('adexample/register', [
                     window.injectLandscape(true);
                 }, 3000);
             }
+        },
+        reload: function () {
+            window.googletag.pubads().refresh([window.slot_landscape]);
         }
     });
 
@@ -28,6 +31,9 @@ define('adexample/register', [
                     window.injectSkyscraper(true);
                 }, 3000);
             }
+        },
+        reload: function () {
+            window.googletag.pubads().refresh([window.slot_skyscraper]);
         }
     });
 
