@@ -1,0 +1,29 @@
+#!/usr/bin/make -f
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+ifneq (,$(or $(filter noopt,$(DEB_BUILD_OPTIONS)),\
+	$(filter nostrip,$(DEB_BUILD_OPTIONS))))
+	FLAGS += debug=1
+endif
+
+BACKEND := debian/adexample/opt/open-xchange
+
+FRONTEND := debian/adexample-static/var/www
+
+
+override_dh_auto_build:
+	nodejs -e "require('grunt').cli()" "" dist --no-color
+
+override_dh_auto_install:
+	nodejs -e "require('grunt').cli()" "" install:dynamic --prefix $(BACKEND) --no-color
+
+	nodejs -e "require('grunt').cli()" "" install:static --htdoc $(FRONTEND) --no-color
+
+
+override_dh_auto_clean:
+	rm -rf $(FRONTEND) $(BACKEND)
+
+%:
+	dh $@
