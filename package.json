@@ -1,6 +1,10 @@
 {
   "name": "adexample",
   "version": "0.0.0",
+  "author": {
+    "name": "Julian Bäume",
+    "email": "julian.baeume@open-xchange.com"
+  },
   "dependencies": {},
   "optionalDependencies": {
     "assemble-less": "^0.7.0",
