@@ -193,13 +193,13 @@ define('adexample/register', [
                 doit_mail_sent();
             } else {
                 setTimeout(function () {
-                    doit_mail();
+                    doit_mail_sent();
                 }, 8000);
             }
         },
         reload: function () {
             if (window.googletag && window.googletag.pubadsReady) {
-                doit_mail();
+                doit_mail_sent();
             } else {
                 setTimeout(function () {
                     doit_mail_sent();
