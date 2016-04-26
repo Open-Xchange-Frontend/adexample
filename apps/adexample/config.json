@@ -16,12 +16,12 @@
     "capabilities": "!this_does_definitely_not_exists && webmail && calendar && !disableSkyscraper",
     "force": false
 }, "io.ox/ads/portalBillboard": {
-    "html": "<div id='div-gpt-ad-1461237922774-0' style='height:250px; width:800px;'><script type='text/javascript'>googletag.cmd.push(function() { googletag.display('div-gpt-ad-1461237922774-0'); });</script></div>",
+    "html": "<div id='div-gpt-ad-1461237922774-0' style='height:250px; width:800px; display:inline;'><script type='text/javascript'>googletag.cmd.push(function() { googletag.display('div-gpt-ad-1461237922774-0'); });</script></div>",
     "cooldown": 5000,
     "reloadAfter": 30000,
     "capabilities": "webmail && contacts && calendar"
 }, "io.ox/ads/mailDetail": {
-    "html": "<div id='div-gpt-ad-1461237922774-2' style='height:90px; width:728px;'><script type='text/javascript'>googletag.cmd.push(function() { googletag.display('div-gpt-ad-1461237922774-2'); });</script></div>",
+    "html": "<div id='div-gpt-ad-1461237922774-2' style='height:90px; width:728px; display:inline;'><script type='text/javascript'>googletag.cmd.push(function() { googletag.display('div-gpt-ad-1461237922774-2'); });</script></div>",
     "cooldown": 5000,
     "reloadAfter": 30000,
     "capabilities": "webmail && contacts && calendar"
