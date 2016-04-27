@@ -37,7 +37,7 @@ define('adexample/setup', ['less!adexample/style'], function () {
         window.slot_mail = googletag.defineSlot('/16237186/Email_Leaderboard_728x90', [728, 90], 'div-gpt-ad-1461237922774-2')
             .addService(googletag.pubads());
         var mapping_mail = googletag.sizeMapping()
-            .addSize([1024, 768], [728, 90])
+            .addSize([1630, 768], [728, 90])
             .addSize([0, 0], [320, 50])
             .build();
         window.slot_mail.defineSizeMapping(mapping_mail);
