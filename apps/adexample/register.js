@@ -144,7 +144,9 @@ define('adexample/register', [
 
     ext.point('io.ox/ads/portalBillboard').extend({
         id: 'adexample',
-        draw: function () {
+        index: 'first',
+        draw: function (baton) {
+            if (_.device('smartphone')) baton.preventDefault();
             if (window.googletag && window.googletag.pubadsReady) {
                 doit_portal();
             } else {
