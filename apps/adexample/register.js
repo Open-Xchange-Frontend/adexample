@@ -5,107 +5,56 @@ define('adexample/register', [
 ], function (data, code, ext) {
     'use strict';
 
-    var cooldown_leaderboard = 0;
-    var cooldown_skyscraper = 0;
-    var cooldown_portal = 0;
-    var cooldown_mail = 0;
-    var cooldown_mail_sent = 0;
     var selection_init_leaderboard = false;
     var selection_init_skyscraper = false;
     var folder_seletion_leaderboard = false;
     var folder_seletion_skyscraper = false;
 
-    function check_cooldown(check) {
-        var t = new Date().getTime();
-        if (check < t) {
-            return true;
-        }
-        return false;
-    }
-
-    function doit_skyscraper() {
-        if (check_cooldown(cooldown_skyscraper)) {
-            window.googletag.pubads().refresh([window.slot_skyscraper]);
-            var cooldown = 0;
-            if (json['io.ox/ads/skyscraper'].cooldown !== undefined && json['io.ox/ads/skyscraper'].cooldown > 0) {
-                cooldown = json['io.ox/ads/skyscraper'].cooldown;
+    /**
+     * Check and update the cooldown data.
+     *
+     * @param area - {String} the extension point name of the ad area
+     * @param options - {Object} use { force: true } to enforce an update
+     * @returns {boolean} - true if cooldown was updated -> a refresh should happen
+     *
+     * TODO: may be, find a better name and add it to core API
+     */
+    var checkCooldown = (function () {
+        var cooldown = {};
+        return function checkCooldown(area, options) {
+            options = _.extend({
+                force: false
+            }, options);
+            if (options.force || !cooldown[area] || cooldown[area] >= _.now()) {
+                cooldown[area] = (Number(json[area].cooldown) || 0) + _.now();
+                return true;
             }
-            cooldown_skyscraper = new Date().getTime() + cooldown;
-        }
-    }
-
-    function doit_leaderboard() {
-        if (check_cooldown(cooldown_leaderboard)) {
-            window.googletag.pubads().refresh([window.slot_landscape]);
-            var cooldown = 0;
-            if (json['io.ox/ads/leaderboard'].cooldown !== undefined && json['io.ox/ads/leaderboard'].cooldown > 0) {
-                cooldown = json['io.ox/ads/leaderboard'].cooldown;
-            }
-            cooldown_leaderboard = new Date().getTime() + cooldown;
-        }
-    }
-
-    function doit_portal() {
-        if (check_cooldown(cooldown_portal)) {
-            window.googletag.pubads().refresh([window.slot_portal]);
-            var cooldown = 0;
-            if (json['io.ox/ads/portalBillboard'].cooldown !== undefined && json['io.ox/ads/portalBillboard'].cooldown > 0) {
-                cooldown = json['io.ox/ads/portalBillboard'].cooldown;
-            }
-            cooldown_portal = new Date().getTime() + cooldown;
-        }
-    }
-
-    function doit_mail() {
-        if (check_cooldown(cooldown_mail)) {
-            window.googletag.pubads().refresh([window.slot_mail]);
-            var cooldown = 0;
-            if (json['io.ox/ads/mailDetail'].cooldown !== undefined && json['io.ox/ads/mailDetail'].cooldown > 0) {
-                cooldown = json['io.ox/ads/mailDetail'].cooldown;
-            }
-            cooldown_mail = new Date().getTime() + cooldown;
-        }
-    }
-
-    function doit_mail_sent() {
-        if (check_cooldown(cooldown_mail_sent)) {
-            window.googletag.pubads().refresh([window.slot_mail_sent]);
-            var cooldown = 0;
-            if (json['io.ox/ads/mailSentOverlay'].cooldown !== undefined && json['io.ox/ads/mailSentOverlay'].cooldown > 0) {
-                cooldown = json['io.ox/ads/mailSentOverlay'].cooldown;
-            }
-            cooldown_mail_sent = new Date().getTime() + cooldown;
-        }
-    }
+            return false;
+        };
+    })();
 
     ext.point('io.ox/ads/leaderboard').extend({
         id: 'adexample',
         draw: function () {
-            if (window.googletag && window.googletag.pubadsReady) {
-                doit_leaderboard();
-                if (ox.ui.App.getCurrentApp().listView !== undefined) {
-                    if (selection_init_leaderboard === false) {
-                        ox.ui.App.getCurrentApp().listView.on('selection:change', doit_leaderboard);
-                        selection_init_leaderboard = true;
-                    }
+            ext.point('io.ox/ads/leaderboard').invoke('reload');
+            if (ox.ui.App.getCurrentApp().listView !== undefined) {
+                if (selection_init_leaderboard === false) {
+                    ox.ui.App.getCurrentApp().listView.on('selection:change', function () {
+                        ext.point('io.ox/ads/leaderboard').invoke('reload');
+                    });
+                    selection_init_leaderboard = true;
                 }
-                if (folder_seletion_leaderboard === false) {
-                    ox.ui.App.getCurrentApp().on('folder:change', doit_leaderboard);
-                    folder_seletion_leaderboard = true;
-                }
-            } else {
-                setTimeout(function () {
-                    doit_leaderboard();
-                }, 5000);
+            }
+            if (folder_seletion_leaderboard === false) {
+                ox.ui.App.getCurrentApp().on('folder:change', function () {
+                    ext.point('io.ox/ads/leaderboard').invoke('reload');
+                });
+                folder_seletion_leaderboard = true;
             }
         },
         reload: function () {
-            if (window.googletag && window.googletag.pubadsReady) {
-                doit_leaderboard();
-            } else {
-                setTimeout(function () {
-                    doit_leaderboard();
-                }, 5000);
+            if (checkCooldown('io.ox/ads/leaderboard')) {
+                window.googletag.pubads().refresh([window.slot_landscape]);
             }
         }
     });
@@ -113,31 +62,23 @@ define('adexample/register', [
     ext.point('io.ox/ads/skyscraper').extend({
         id: 'adexample',
         draw: function () {
-            if (window.googletag && window.googletag.pubadsReady) {
-                doit_skyscraper();
-                if (ox.ui.App.getCurrentApp().listView !== undefined) {
-                    if (selection_init_skyscraper === false) {
-                        ox.ui.App.getCurrentApp().listView.on('selection:change', doit_skyscraper);
-                        selection_init_skyscraper = true;
-                    }
-                }
-                if (folder_seletion_skyscraper === false) {
-                    ox.ui.App.getCurrentApp().on('folder:change', doit_skyscraper);
-                    folder_seletion_skyscraper = true;
-                }
-            } else {
-                setTimeout(function () {
-                    doit_skyscraper();
-                }, 8000);
+            ext.point('io.ox/ads/skyscraper').invoke('reload');
+            if (ox.ui.App.getCurrentApp().listView && selection_init_skyscraper === false) {
+                ox.ui.App.getCurrentApp().listView.on('selection:change', function () {
+                    ext.point('io.ox/ads/skyscraper').invoke('reload');
+                });
+                selection_init_skyscraper = true;
+            }
+            if (folder_seletion_skyscraper === false) {
+                ox.ui.App.getCurrentApp().on('folder:change', function () {
+                    ext.point('io.ox/ads/skyscraper').invoke('reload');
+                });
+                folder_seletion_skyscraper = true;
             }
         },
         reload: function () {
-            if (window.googletag && window.googletag.pubadsReady) {
-                doit_skyscraper();
-            } else {
-                setTimeout(function () {
-                    doit_skyscraper();
-                }, 8000);
+            if (checkCooldown('io.ox/ads/skyscraper')) {
+                window.googletag.pubads().refresh([window.slot_skyscraper]);
             }
         }
     });
@@ -146,22 +87,18 @@ define('adexample/register', [
         id: 'adexample',
         index: 'first',
         draw: function (baton) {
-            if (_.device('smartphone')) baton.preventDefault();
-            if (window.googletag && window.googletag.pubadsReady) {
-                doit_portal();
+            if (_.device('smartphone')) {
+                baton.preventDefault();
             } else {
-                setTimeout(function () {
-                    doit_portal();
-                }, 8000);
+                // refresh a little later, because window is not shown, yet
+                ox.once('portal:items:render', function () {
+                    ext.point('io.ox/ads/portalBillboard').invoke('reload');
+                });
             }
         },
         reload: function () {
-            if (window.googletag && window.googletag.pubadsReady) {
-                doit_portal();
-            } else {
-                setTimeout(function () {
-                    doit_portal();
-                }, 8000);
+            if (checkCooldown('io.ox/ads/portalBillboard')) {
+                window.googletag.pubads().refresh([window.slot_portal]);
             }
         }
     });
@@ -169,21 +106,11 @@ define('adexample/register', [
     ext.point('io.ox/ads/mailDetail').extend({
         id: 'adexample',
         draw: function () {
-            if (window.googletag && window.googletag.pubadsReady) {
-                doit_mail();
-            } else {
-                setTimeout(function () {
-                    doit_mail();
-                }, 8000);
-            }
+            ext.point('io.ox/ads/mailDetail').invoke('reload');
         },
         reload: function () {
-            if (window.googletag && window.googletag.pubadsReady) {
-                doit_mail();
-            } else {
-                setTimeout(function () {
-                    doit_mail();
-                }, 8000);
+            if (checkCooldown('io.ox/ads/mailDetail')) {
+                window.googletag.pubads().refresh([window.slot_mail]);
             }
         }
     });
@@ -191,21 +118,11 @@ define('adexample/register', [
     ext.point('io.ox/ads/mailSentOverlay').extend({
         id: 'adexample',
         draw: function () {
-            if (window.googletag && window.googletag.pubadsReady) {
-                doit_mail_sent();
-            } else {
-                setTimeout(function () {
-                    doit_mail_sent();
-                }, 8000);
-            }
+            ext.point('io.ox/ads/mailSentOverlay').invoke('reload');
         },
         reload: function () {
-            if (window.googletag && window.googletag.pubadsReady) {
-                doit_mail_sent();
-            } else {
-                setTimeout(function () {
-                    doit_mail_sent();
-                }, 8000);
+            if (checkCooldown('io.ox/ads/mailSentOverlay')) {
+                window.googletag.pubads().refresh([window.slot_mail_sent]);
             }
         }
     });
