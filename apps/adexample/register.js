@@ -19,19 +19,19 @@ define('adexample/register', [
      *
      * TODO: may be, find a better name and add it to core API
      */
-    var checkCooldown = (function () {
+    var checkCooldown = (function (config) {
         var cooldown = {};
         return function checkCooldown(area, options) {
             options = _.extend({
                 force: false
             }, options);
             if (options.force || !cooldown[area] || cooldown[area] < _.now()) {
-                cooldown[area] = (Number(json[area].cooldown) || 0) + _.now();
+                cooldown[area] = (Number(config[area].cooldown) || 0) + _.now();
                 return true;
             }
             return false;
         };
-    })();
+    })(json);
 
     ext.point('io.ox/ads/leaderboard').extend({
         id: 'adexample',
