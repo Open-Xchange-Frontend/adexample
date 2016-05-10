@@ -25,7 +25,7 @@ define('adexample/register', [
             options = _.extend({
                 force: false
             }, options);
-            if (options.force || !cooldown[area] || cooldown[area] >= _.now()) {
+            if (options.force || !cooldown[area] || cooldown[area] < _.now()) {
                 cooldown[area] = (Number(json[area].cooldown) || 0) + _.now();
                 return true;
             }
